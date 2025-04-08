@@ -1,0 +1,158 @@
+swagger: "2.0"
+info:
+  description: "API para gerenciamento de produtos"
+  version: "1.0.0"
+  title: "API de Produtos"
+  contact:
+    email: "dev@example.com"
+  license:
+    name: "MIT"
+host: "localhost:5000"
+basePath: "/"
+tags:
+- name: "Produtos"
+  description: "Operações CRUD para produtos"
+schemes:
+- "http"
+paths:
+  /produtos:
+    get:
+      tags:
+      - "Produtos"
+      summary: "Lista todos os produtos"
+      description: ""
+      operationId: "listar_produtos"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Lista de produtos"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Produto"
+    post:
+      tags:
+      - "Produtos"
+      summary: "Cria um novo produto"
+      operationId: "criar_produto"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Dados do produto"
+        required: true
+        schema:
+          $ref: "#/definitions/ProdutoInput"
+      responses:
+        201:
+          description: "Produto criado"
+          schema:
+            $ref: "#/definitions/Produto"
+        400:
+          description: "Dados inválidos"
+  /produtos/{id}:
+    get:
+      tags:
+      - "Produtos"
+      summary: "Obtém um produto específico"
+      operationId: "obter_produto"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do produto"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Produto encontrado"
+          schema:
+            $ref: "#/definitions/Produto"
+        404:
+          description: "Produto não encontrado"
+    put:
+      tags:
+      - "Produtos"
+      summary: "Atualiza um produto existente"
+      operationId: "atualizar_produto"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do produto"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Dados atualizados do produto"
+        required: true
+        schema:
+          $ref: "#/definitions/ProdutoInput"
+      responses:
+        200:
+          description: "Produto atualizado"
+          schema:
+            $ref: "#/definitions/Produto"
+        404:
+          description: "Produto não encontrado"
+        400:
+          description: "Dados inválidos"
+    delete:
+      tags:
+      - "Produtos"
+      summary: "Remove um produto"
+      operationId: "deletar_produto"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do produto"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Produto removido"
+        404:
+          description: "Produto não encontrado"
+definitions:
+  Produto:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      nome:
+        type: "string"
+      preco:
+        type: "number"
+        format: "float"
+      estoque:
+        type: "integer"
+        format: "int64"
+    required:
+    - "id"
+    - "nome"
+    - "preco"
+  ProdutoInput:
+    type: "object"
+    properties:
+      nome:
+        type: "string"
+      preco:
+        type: "number"
+        format: "float"
+      estoque:
+        type: "integer"
+        format: "int64"
+    required:
+    - "nome"
+    - "preco"
